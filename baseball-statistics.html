@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Baseball Stats Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 350px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 1rem;
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #reset-btn {
+            padding: 10px 15px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        #reset-btn:hover {
+            background-color: #d32f2f;
+        }
+
+        #stats-result {
+            margin-top: 20px;
+            display: none;
+        }
+
+        .result {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Advanced Baseball Stats Tracker</h1>
+        <form id="stats-form">
+            <label for="player-name">Player Name:</label>
+            <input type="text" id="player-name" placeholder="Enter player's name" required><br>
+
+            <label for="plate-appearances">Plate Appearances (PA):</label>
+            <input type="number" id="plate-appearances" placeholder="Enter plate appearances" required><br>
+
+            <label for="at-bats">At-Bats (AB):</label>
+            <input type="number" id="at-bats" placeholder="Enter number of at-bats" required><br>
+
+            <label for="walks">Walks (BB):</label>
+            <input type="number" id="walks" placeholder="Enter number of walks" required><br>
+
+            <label for="hits">Hits (H):</label>
+            <input type="number" id="hits" placeholder="Enter number of hits" required><br>
+
+            <label for="singles">Singles (1B):</label>
+            <input type="number" id="singles" placeholder="Enter number of singles" required><br>
+
+            <label for="doubles">Doubles (2B):</label>
+            <input type="number" id="doubles" placeholder="Enter number of doubles" required><br>
+
+            <label for="triples">Triples (3B):</label>
+            <input type="number" id="triples" placeholder="Enter number of triples" required><br>
+
+            <label for="homeruns">Home Runs (HR):</label>
+            <input type="number" id="homeruns" placeholder="Enter number of home runs" required><br>
+
+            <button type="submit">Calculate Stats</button>
+        </form>
+
+        <div id="stats-result">
+            <h2>Player Stats</h2>
+            <p id="result-name"></p>
+            <p id="batting-average" class="result"></p>
+            <p id="on-base-percentage" class="result"></p>
+            <p id="slugging-percentage" class="result"></p>
+            <p id="ops" class="result"></p>
+        </div>
+
+        <button id="reset-btn">Reset</button>
+    </div>
+
+    <script>
+        document.getElementById('stats-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Get input values
+            const playerName = document.getElementById('player-name').value;
+            const plateAppearances = parseInt(document.getElementById('plate-appearances').value);
+            const atBats = parseInt(document.getElementById('at-bats').value);
+            const walks = parseInt(document.getElementById('walks').value);
+            const hits = parseInt(document.getElementById('hits').value);
+            const singles = parseInt(document.getElementById('singles').value);
+            const doubles = parseInt(document.getElementById('doubles').value);
+            const triples = parseInt(document.getElementById('triples').value);
+            const homeruns = parseInt(document.getElementById('homeruns').value);
+
+            // Validate input values
+            if (atBats === 0) {
+                alert("At-bats cannot be zero.");
+                return;
+            }
+
+            // Calculate statistics
+            const battingAverage = (hits / atBats).toFixed(3);
+            const onBasePercentage = ((hits + walks) / plateAppearances).toFixed(3);
+            const sluggingPercentage = ((singles + 2 * doubles + 3 * triples + 4 * homeruns) / atBats).toFixed(3);
+            const ops = (parseFloat(onBasePercentage) + parseFloat(sluggingPercentage)).toFixed(3);
+
+            // Display results
+            document.getElementById('result-name').textContent = `Player: ${playerName}`;
+            document.getElementById('batting-average').textContent = `Batting Average: ${battingAverage}`;
+            document.getElementById('on-base-percentage').textContent = `On-Base Percentage: ${onBasePercentage}`;
+            document.getElementById('slugging-percentage').textContent = `Slugging Percentage: ${sluggingPercentage}`;
+            document.getElementById('ops').textContent = `On-Base Plus Slugging (OPS): ${ops}`;
+
+            // Show the result section
+            document.getElementById('stats-result').style.display = 'block';
+        });
+
+        document.getElementById('reset-btn').addEventListener('click', function() {
+            // Reset form inputs
+            document.getElementById('stats-form').reset();
+            document.getElementById('stats-result').style.display = 'none';
+        });
+    </script>
+</body>
+</html>
